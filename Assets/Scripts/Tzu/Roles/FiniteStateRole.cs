@@ -3,7 +3,7 @@ using UnityEngine;
 //============================================================
 //@author	JiphuTzu
 //@create	11/24/2017
-//@company	FaymAR
+//@company	Tzu
 //
 //@description:
 //============================================================
@@ -49,7 +49,7 @@ namespace Tzu.Roles
         {
             _states = new Dictionary<T, State<T>>();
         }
-        protected void Update()
+        protected virtual void Update()
         {
             currentState?.Update();
         }
@@ -62,12 +62,12 @@ namespace Tzu.Roles
     }
     public abstract class State<T>
     {
-        protected FiniteStateRole<T> owner;
+        private FiniteStateRole<T> _fsr;
         public T id { get; private set; }
-        public State(T id, FiniteStateRole<T> owner)
+        public State(T id, FiniteStateRole<T> fsr)
         {
             this.id = id;
-            this.owner = owner;
+            this._fsr = fsr;
         }
         public abstract void Enter();
         public abstract void Update();
@@ -75,11 +75,11 @@ namespace Tzu.Roles
         public void GoToState(T id)
         {
             //Debug.Log(owner+".GoTo " + id);
-            owner.SetState(id);
+            _fsr.SetState(id);
         }
         public override string ToString()
         {
-            return id.ToString();
+            return string.Format("State[{0}]",id);
         }
     }
     // public class ComplexState<T, F, S> : State<T, F> where T : MonoBehaviour
